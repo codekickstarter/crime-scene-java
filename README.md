@@ -1,5 +1,8 @@
-# crime-scene-java
-A java implementation of the hotspot analysis done in the book "Your code as a crime scene"
+# Your code as a crime scene - Code maat
+
+A java implementation of the hotspot analysis done in the book "Your code as a crime scene".
+
+I really like the simplicity of this analysis. The book uses python and an external tool (cloc) to count the lines of code. I decided to make a simple java program that combines both.
 
 ## Preparing the input
 
