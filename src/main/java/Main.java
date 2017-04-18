@@ -15,6 +15,7 @@ public class Main {
 
     private static final String SOURCE_CODE_ROOT = "C:\\projects\\roots\\ifrs9";
     private static final String WORKING_DIRECTORY = "D:\\tmp\\codemaat";
+    private static final boolean WEIGH_NUMBER_OF_CHANGES = false;
 
     public static void main(String[] args) throws IOException {
 
@@ -27,11 +28,11 @@ public class Main {
             return c2.getAmountOfLines().compareTo(c1.getAmountOfLines());
         });
 
-        String filter = ".*";
+        String filter = "(web|core).*";
 
         PrintWriter writer = new PrintWriter(WORKING_DIRECTORY + File.separator + "out.csv");
         changes.stream()
-                .filter(c -> c.getAmountOfLines() > 0 && c.getChangeCount() > 2)
+                .filter(c -> c.getAmountOfLines() > 0 && c.getChangeCount() > 10)
                 .filter(c -> c.getFileName().matches(filter))
                 .forEach(c -> writer.write(c.getFileName() + ";" + c.getChangeCount() + ";" + c.getAmountOfLines() + "\n"));
         writer.close();
@@ -40,16 +41,24 @@ public class Main {
     private static List<FileHotspotIndicators> getChangeCountPerFile() throws IOException {
 
         Map<String, Integer> countPerFile = new HashMap<>();
-        Pattern linePattern = Pattern.compile("\\d*\t\\d*\t(.*)");
+        Pattern linePattern = Pattern.compile("(\\d*)\t(\\d*)\t(.*)");
 
         Files.lines(Paths.get(WORKING_DIRECTORY + File.separator + "cm_input.csv")).forEach(line -> {
             if (line.matches("\\d.*")) {
 
                 Matcher matcher = linePattern.matcher(line);
                 if (matcher.matches()) {
-                    String fileName = matcher.group(1);
+                    String fileName = matcher.group(3);
+
+                    Integer numberOfChanges;
+                    if (WEIGH_NUMBER_OF_CHANGES) {
+                        numberOfChanges = Integer.valueOf(matcher.group(1)) + Integer.valueOf(matcher.group(2));
+                    } else {
+                        numberOfChanges = 1;
+                    }
+
                     countPerFile.putIfAbsent(fileName, 0);
-                    countPerFile.put(fileName, countPerFile.get(fileName) + 1);
+                    countPerFile.put(fileName, countPerFile.get(fileName) + numberOfChanges);
                 }
             }
         });
