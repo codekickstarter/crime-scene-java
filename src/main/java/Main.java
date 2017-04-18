@@ -13,7 +13,8 @@ import java.util.regex.Pattern;
 
 public class Main {
 
-    private static final String PROJECT_ROOT = "C:\\projects\\roots\\ifrs9";
+    private static final String SOURCE_CODE_ROOT = "C:\\projects\\roots\\ifrs9";
+    private static final String WORKING_DIRECTORY = "D:\\tmp\\codemaat";
 
     public static void main(String[] args) throws IOException {
 
@@ -26,9 +27,9 @@ public class Main {
             return c2.getAmountOfLines().compareTo(c1.getAmountOfLines());
         });
 
-        String filter = "web.*";
+        String filter = ".*";
 
-        PrintWriter writer = new PrintWriter("D:\\tmp\\codemaat\\out.csv");
+        PrintWriter writer = new PrintWriter(WORKING_DIRECTORY + File.separator + "out.csv");
         changes.stream()
                 .filter(c -> c.getAmountOfLines() > 0 && c.getChangeCount() > 2)
                 .filter(c -> c.getFileName().matches(filter))
@@ -41,7 +42,7 @@ public class Main {
         Map<String, Integer> countPerFile = new HashMap<>();
         Pattern linePattern = Pattern.compile("\\d*\t\\d*\t(.*)");
 
-        Files.lines(Paths.get("D:\\tmp\\codemaat\\cm_input.csv")).forEach(line -> {
+        Files.lines(Paths.get(WORKING_DIRECTORY + File.separator + "cm_input.csv")).forEach(line -> {
             if (line.matches("\\d.*")) {
 
                 Matcher matcher = linePattern.matcher(line);
@@ -55,8 +56,7 @@ public class Main {
 
         List<FileHotspotIndicators> changes = new ArrayList<>();
         countPerFile.forEach((file, count) -> {
-
-            Path path = Paths.get(PROJECT_ROOT + File.separator + file);
+            Path path = Paths.get(SOURCE_CODE_ROOT + File.separator + file);
             int amountOfLines;
             if (path.toFile().exists()) {
                 try {

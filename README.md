@@ -8,6 +8,6 @@ I really like the simplicity of this analysis. The book uses the author's tool "
 
 Execute this git command to get a list of all the changes that were made to files as a csv file. This is the required input for the program.
 
-    git log --all --numstat --date=short --pretty=format:'--%h--%ad--%aN' --no-renames > cm_input.csv
+    git log --all --numstat --date=short --pretty=format:'--%h--%ad--%aN' --no-renames --no-merges > cm_input.csv
 
 The application will output a CSV file that shows the amount of changes made to every file and the complexity of the file.
