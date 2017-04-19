@@ -13,8 +13,9 @@ import java.util.regex.Pattern;
 
 public class Main {
 
-    private static final String SOURCE_CODE_ROOT = "C:\\projects\\roots\\ifrs9";
+    private static final String SOURCE_CODE_DIRECTORY = "C:\\projects\\testproject";
     private static final String WORKING_DIRECTORY = "D:\\tmp\\codemaat";
+
     private static final boolean WEIGH_NUMBER_OF_CHANGES = false;
 
     public static void main(String[] args) throws IOException {
@@ -25,16 +26,16 @@ public class Main {
             if (changeCompare != 0) {
                 return changeCompare;
             }
-            return c2.getAmountOfLines().compareTo(c1.getAmountOfLines());
+            return c2.getComplexity().compareTo(c1.getComplexity());
         });
 
-        String filter = "(web|core).*";
+        String filter = ".*";
 
         PrintWriter writer = new PrintWriter(WORKING_DIRECTORY + File.separator + "out.csv");
         changes.stream()
-                .filter(c -> c.getAmountOfLines() > 0 && c.getChangeCount() > 10)
+                .filter(c -> c.getComplexity() > 0 && c.getChangeCount() > 10)
                 .filter(c -> c.getFileName().matches(filter))
-                .forEach(c -> writer.write(c.getFileName() + ";" + c.getChangeCount() + ";" + c.getAmountOfLines() + "\n"));
+                .forEach(c -> writer.write(c.getFileName() + ";" + c.getChangeCount() + ";" + c.getComplexity() + "\n"));
         writer.close();
     }
 
@@ -65,7 +66,7 @@ public class Main {
 
         List<FileHotspotIndicators> changes = new ArrayList<>();
         countPerFile.forEach((file, count) -> {
-            Path path = Paths.get(SOURCE_CODE_ROOT + File.separator + file);
+            Path path = Paths.get(SOURCE_CODE_DIRECTORY + File.separator + file);
             int amountOfLines;
             if (path.toFile().exists()) {
                 try {

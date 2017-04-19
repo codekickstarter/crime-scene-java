@@ -2,12 +2,12 @@ public class FileHotspotIndicators {
 
     private String fileName;
     private Integer changeCount;
-    private Integer amountOfLines;
+    private Integer complexity;
 
-    public FileHotspotIndicators(String fileName, Integer changeCount, Integer amountOfLines) {
+    public FileHotspotIndicators(String fileName, Integer changeCount, Integer complexity) {
         this.fileName = fileName;
         this.changeCount = changeCount;
-        this.amountOfLines = amountOfLines;
+        this.complexity = complexity;
     }
 
     public String getFileName() {
@@ -18,7 +18,7 @@ public class FileHotspotIndicators {
         return changeCount;
     }
 
-    public Integer getAmountOfLines() {
-        return amountOfLines;
+    public Integer getComplexity() {
+        return complexity;
     }
 }
